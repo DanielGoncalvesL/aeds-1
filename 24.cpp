@@ -22,6 +22,8 @@ int main()
     float somatorio = 0;
     for (valorNoIntervalo = limiteInferior; valorNoIntervalo <= limiteSuperior - 1; valorNoIntervalo += 2)
     {
+        if(valorNoIntervalo % 2 == 0)
+            cout << valorNoIntervalo << endl;
         somatorio += valorNoIntervalo;
     }
 
