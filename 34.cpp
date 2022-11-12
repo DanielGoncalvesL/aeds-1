@@ -1,6 +1,3 @@
-//
-// Created by Josiney Junior on 04/10/22.
-//
 #include <iostream>
 
 using namespace std;
@@ -26,7 +23,7 @@ int main() {
     float weight30Average = 0.0;
     float weight31Average = 0;
 
-    float ageAverage = 0;
+    float ageAverage = 0, weightAverage = 0;
     for (int i = 0; i < 20; i++) {
         int personAge = age[i];
 

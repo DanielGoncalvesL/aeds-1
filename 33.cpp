@@ -27,7 +27,8 @@ int main(){
 
     float media = (nota1 + nota2)/2;
 
-    cout << "\nNome do aluno: " << nome << " - Media das notas: " << media << endl;
+    cout << "\nNome do aluno: " << nome << 
+    " - Media das notas: " << media << endl;
 
     soma = soma + (nota1 + nota2);
   }

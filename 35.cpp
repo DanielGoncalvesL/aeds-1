@@ -15,7 +15,8 @@ int main(){
 
     cin >> idade;
 
-    cout << "\nInforme a sua avaliacao do filme (1 - Regular, 2 - Bom, 3 - Excelente): ";
+    cout << "\nInforme a sua avaliacao do filme" << 
+    "(1 - Regular, 2 - Bom, 3 - Excelente): ";
 
     int avaliacao;
 
