@@ -1,7 +1,7 @@
 SRC_DIR = src
 BUILD_DIR = build
 CC = g++
-SRC_FILES = $(wildcard temp/*.cpp)
+SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJ_NAME = tp
 INCLUDE_PATHS = -Iinclude
 LIBRARY_PATHS = -L/opt/homebrew/Cellar/sdl2/2.26.0/lib/ -L/opt/homebrew/Cellar/sdl2_image/2.6.2/lib
