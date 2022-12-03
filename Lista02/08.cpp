@@ -29,7 +29,7 @@ int main()
         somaMaiores += numeros[i];
     }
 
-    cout << "Menor: " << menor << endl;
+    cout << "Menor: " << numeros[menor] << endl;
     cout << "Soma dos maiores: " << somaMaiores << endl;
 
     return 0;
