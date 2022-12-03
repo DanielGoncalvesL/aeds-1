@@ -27,7 +27,8 @@ int main(){
   for (size_t i = 0; i < vectorSize; i++)
   {
     if(vector[i] == numeroBuscado){
-      cout << "O numero " << numeroBuscado << " foi encontrado" << "\nPosicao no vetor: " << i;
+      cout << "O numero " << numeroBuscado 
+        << " foi encontrado" << "\nPosicao no vetor: " << i;
     }
   }
   
