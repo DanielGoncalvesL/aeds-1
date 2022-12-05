@@ -180,7 +180,7 @@ SegregationStats segregate(std::vector<std::vector<Agent>> society)
 
                 if (similar < (8 * threshold))
                 {
-                    unhappyAgents.push_back({.x = j, .y = i, .type = position.type});
+                    unhappyAgents.push_back({.x = i, .y = j, .type = position.type});
 
                     // Moore empty = findEmpty(society);
                     // std::swap(society.at(empty.y).at(empty.x), society.at(i).at(j));
@@ -201,7 +201,6 @@ SegregationStats segregate(std::vector<std::vector<Agent>> society)
     }
 
     // std::cout << society.size() << " " << iterations << std::endl;
-    std::cout << society.at(0).size() << " ";
     return {.society = society};
 }
 
@@ -280,7 +279,6 @@ int main()
     std::cin >> matrixSize;
 
     std::cout << "Gerando Modelo de Segregação Social de Schelling..." << std::endl;
-
 
     std::vector<std::vector<Agent>> matrix = generateSociety(matrixSize);
     // for (std::vector<Agent> agents : matrix)
