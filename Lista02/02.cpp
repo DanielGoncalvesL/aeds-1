@@ -23,6 +23,4 @@ int main()
 
     cout << "Pessoas com menos de 21 anos: " << menor21 << endl;
     cout << "Pessoas com mais de 50 anos: " << maior50 << endl;
-
-    return 0;
 }

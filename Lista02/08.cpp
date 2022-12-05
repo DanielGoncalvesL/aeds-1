@@ -31,6 +31,4 @@ int main()
 
     cout << "Menor: " << numeros[menor] << endl;
     cout << "Soma dos maiores: " << somaMaiores << endl;
-
-    return 0;
 }

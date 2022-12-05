@@ -60,9 +60,10 @@ int main()
     mediaIdades /= espectadores;
 
     cout << "A media das idades dos espectadores é de: " << mediaIdades << endl;
-    cout << "A porcentagem das opnioes excelentes em relação ao total é de: " << porcentagem(espectadores, opnioesExcelentes) << endl;
-    cout << "A porcentagem das opnioes boas em relação ao total é de: " << porcentagem(espectadores, opnioesBoas) << endl;
-    cout << "A porcentagem das opnioes regulares em relação ao total é de: " << porcentagem(espectadores, opnioesRegulares) << endl;
-
-    return 0;
+    cout << "A porcentagem das opnioes excelentes em relação ao total é de: "
+    << porcentagem(espectadores, opnioesExcelentes) << endl;
+    cout << "A porcentagem das opnioes boas em relação ao total é de: "
+    << porcentagem(espectadores, opnioesBoas) << endl;
+    cout << "A porcentagem das opnioes regulares em relação ao total é de: "
+    << porcentagem(espectadores, opnioesRegulares) << endl;
 }

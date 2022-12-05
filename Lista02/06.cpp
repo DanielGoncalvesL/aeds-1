@@ -15,6 +15,4 @@ int main()
     float raiz = (b * -1) / a;
 
     cout << "A raiz da equação é: " << raiz;
-
-    return 0;
 }

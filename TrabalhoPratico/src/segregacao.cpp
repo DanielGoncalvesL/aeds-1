@@ -302,6 +302,4 @@ int main()
     // }
 
     geraGrafico(matrix);
-
-    return 0;
 }

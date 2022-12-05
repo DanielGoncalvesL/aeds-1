@@ -34,6 +34,4 @@ int main()
     {
         cout << numeros[i] << " ";
     }
-
-    return 0;
 }

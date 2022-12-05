@@ -28,6 +28,4 @@ int main()
     }
 
     cout << "Somatório: " << somatorio;
-
-    return 0;
 }
