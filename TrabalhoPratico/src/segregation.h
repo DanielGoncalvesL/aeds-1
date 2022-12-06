@@ -18,6 +18,12 @@ struct SegregationStats
     std::vector<std::vector<Agent>> society;
 };
 
+struct Coordinates
+{
+    int i;
+    int j;
+};
+
 std::vector<std::vector<Agent>> generateSociety(int matrixSize);
 SegregationStats segregate(std::vector<std::vector<Agent>> matrix);
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <random>
-#include "segregacao.h"
+#include "segregation.h"
 
 std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), int xStart, int yStart, int squareSize, SDL_Renderer *renderer, int matrixSize, std::vector<std::vector<Agent>> segregationMatrix)
 {
@@ -49,7 +49,7 @@ SDL_Rect rectFactory(int x, int y, int width, int height)
     return rect;
 }
 
-void geraGrafico(std::vector<std::vector<Agent>> segregationMatrix)
+void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix)
 {
 
     int squareSize = 10;
@@ -136,15 +136,8 @@ void geraGrafico(std::vector<std::vector<Agent>> segregationMatrix)
 
         SDL_RenderPresent(renderer);
 
-        // segregationMatrix = generateSociety(matrixSize);
-
         SegregationStats stats = segregate(segregationMatrix);
         segregationMatrix = stats.society;
-
-        // if (stats.haveSegregation)
-        // {
-        //     std::cout << "Iterações: " << stats.iterations << std::endl;
-        // }
 
         lastDrawTime = SDL_GetTicks64();
     }
