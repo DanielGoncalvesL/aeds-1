@@ -3,25 +3,44 @@
 #include <random>
 #include "segregation.h"
 
-// std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), int xStart, int yStart, int squareSize, SDL_Renderer *renderer, int matrixSize, std::vector<std::vector<Agent>> segregationMatrix)
-// {
-//     std::vector<SDL_Rect> rects;
+std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), int xStart, int yStart, int squareSize, SDL_Renderer *renderer, int matrixSize, std::vector<std::vector<Agent>> segregationMatrix)
+{
+    std::vector<SDL_Rect> rects;
 
-//     std::vector<SDL_Rect> yellowRects;
-//     std::vector<SDL_Rect> redRects;
+    std::vector<SDL_Rect> yellowRects;
+    std::vector<SDL_Rect> redRects;
 
-//     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-//     SDL_Rect yellow[yellowRects.size()];
-//     std::copy(yellowRects.begin(), yellowRects.end(), yellow);
-//     SDL_RenderFillRects(renderer, yellow, yellowRects.size());
+    for (long int i = 0; i < matrixSize; i++)
+    {
+        for (long int j = 0; j < matrixSize; j++)
+        {
+            SDL_Rect rect = (*rectFactory)(xStart + squareSize * i, yStart + squareSize * j, squareSize, squareSize);
+            if (segregationMatrix.at(i).at(j).type == 1)
+            {
+                yellowRects.push_back(rect);
+            }
 
-//     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-//     SDL_Rect red[redRects.size()];
-//     std::copy(redRects.begin(), redRects.end(), red);
-//     SDL_RenderFillRects(renderer, red, redRects.size());
+            if (segregationMatrix.at(i).at(j).type == 0)
+            {
+                redRects.push_back(rect);
+            }
 
-//     return rects;
-// }
+            rects.push_back(rect);
+        }
+    }
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_Rect yellow[yellowRects.size()];
+    std::copy(yellowRects.begin(), yellowRects.end(), yellow);
+    SDL_RenderFillRects(renderer, yellow, yellowRects.size());
+
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_Rect red[redRects.size()];
+    std::copy(redRects.begin(), redRects.end(), red);
+    SDL_RenderFillRects(renderer, red, redRects.size());
+
+    return rects;
+}
 
 SDL_Rect rectFactory(int x, int y, int width, int height)
 {
@@ -30,29 +49,7 @@ SDL_Rect rectFactory(int x, int y, int width, int height)
     return rect;
 }
 
-void plotRect(int x, int y, Agent citizen, int width, int height, SDL_Renderer *renderer)
-{
-    SDL_Rect rect = rectFactory(x, y, width, height);
-
-    if (citizen.type == 1)
-    {
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-    }
-
-    if (citizen.type == 0)
-    {
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    }
-
-    if (citizen.type == 2)
-    {
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    }
-
-    SDL_RenderFillRect(renderer, &rect);
-}
-
-void generateMatrix(std::vector<std::vector<Agent>> &segregationMatrix)
+void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix)
 {
 
     int squareSize = 10;
@@ -100,8 +97,6 @@ void generateMatrix(std::vector<std::vector<Agent>> &segregationMatrix)
         return;
     }
 
-    int cont = 0;
-
     while (appIsRunning)
     {
         // slowing things down a little, you can delete this if you like
@@ -122,45 +117,29 @@ void generateMatrix(std::vector<std::vector<Agent>> &segregationMatrix)
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
-        // std::vector<SDL_Rect> rectsVector = RectMatrix(rectFactory, 10, 10, squareSize, renderer, matrixSize, segregationMatrix);
-        // SDL_Rect rects[rectsVector.size()];
-        // std::copy(rectsVector.begin(), rectsVector.end(), rects);
+        std::vector<SDL_Rect> rectsVector = RectMatrix(rectFactory, 10, 10, squareSize, renderer, matrixSize, segregationMatrix);
+        SDL_Rect rects[rectsVector.size()];
+        std::copy(rectsVector.begin(), rectsVector.end(), rects);
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-        for (size_t i = 0; i < segregationMatrix.size(); i++)
+        int success = SDL_RenderDrawRects(renderer, rects, rectsVector.size());
+        if (success < 0)
         {
-            for (size_t j = 0; j < segregationMatrix.size(); j++)
-            {
-                plotRect(10 + squareSize * i, 10 + squareSize * j, segregationMatrix[i][j], squareSize, squareSize, renderer);
-            }
+            std::cout << SDL_GetError() << std::endl;
+
+            SDL_DestroyRenderer(renderer);
+            SDL_DestroyWindow(window);
+            SDL_Quit();
+            appIsRunning = false;
         }
-
-        // int success = SDL_RenderDrawRects(renderer, rects, rectsVector.size());
-        // if (success < 0)
-        // {
-        //     std::cout << SDL_GetError() << std::endl;
-
-        //     SDL_DestroyRenderer(renderer);
-        //     SDL_DestroyWindow(window);
-        //     SDL_Quit();
-        //     appIsRunning = false;
-        // }
 
         SDL_RenderPresent(renderer);
 
-        // segregate(segregationMatrix);
+        SegregationStats stats = segregate(segregationMatrix);
+        segregationMatrix = stats.society;
 
         lastDrawTime = SDL_GetTicks64();
-    }
-
-    for (size_t i = 0; i < segregationMatrix.size(); i++)
-    {
-        for (size_t j = 0; j < segregationMatrix.size(); j++)
-        {
-            std::cout << segregationMatrix[i][j].type << " ";
-        }
-        std::cout << std::endl;
     }
 
     SDL_DestroyWindow(window);

@@ -16,7 +16,6 @@ struct Moore
 struct SegregationStats
 {
     std::vector<std::vector<Agent>> society;
-    bool hasUnhappy;
 };
 
 struct Coordinates
@@ -26,6 +25,6 @@ struct Coordinates
 };
 
 std::vector<std::vector<Agent>> generateSociety(int matrixSize);
-SegregationStats segregate(std::vector<std::vector<Agent>> &matrix);
+SegregationStats segregate(std::vector<std::vector<Agent>> matrix);
 
 #endif
