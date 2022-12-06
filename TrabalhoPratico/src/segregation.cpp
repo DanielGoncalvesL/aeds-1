@@ -4,6 +4,7 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <cmath>
 
 #include "segregation.h"
 #include "generateMatrix.h"
@@ -11,6 +12,7 @@
 bool verifyUnhappyCitizen(int x, int y, std::vector<std::vector<Agent>> matrix)
 {
     int cont = 0;
+    int contRadius = 0;
 
     for (int i = y - 1; i <= y + 1; i++)
     {
@@ -24,6 +26,7 @@ bool verifyUnhappyCitizen(int x, int y, std::vector<std::vector<Agent>> matrix)
             {
                 if (i >= 0 && i < matrix.size() && j >= 0 && j < matrix.size())
                 {
+                    contRadius += 1;
                     if (matrix[y][x].type != matrix[i][j].type && matrix[i][j].type != 2)
                     {
                         cont += 1;
@@ -33,7 +36,7 @@ bool verifyUnhappyCitizen(int x, int y, std::vector<std::vector<Agent>> matrix)
         }
     }
 
-    if (cont >= 5)
+    if (cont >= std::round(contRadius * 0.3))
     {
         return true;
     }
@@ -41,20 +44,25 @@ bool verifyUnhappyCitizen(int x, int y, std::vector<std::vector<Agent>> matrix)
     return false;
 }
 
+bool isEmptyPosition(std::vector<std::vector<Agent>> matrix, int x, int y){
+    return matrix[x][y].type == 2 ? true : false;
+}
+
 Coordinates searchBlankSpace(std::vector<std::vector<Agent>> matrix)
 {
-    for (int i = 0; i < matrix.size(); i++)
+    std::random_device rd;
+    std::uniform_int_distribution randomCoordinates(0, (int) matrix.size() - 1);
+
+    int x = (int) randomCoordinates(rd);
+    int y = (int) randomCoordinates(rd);
+
+    while (matrix[x][y].type != 2)
     {
-        for (int j = 0; j < matrix.size(); j++)
-        {
-            if (matrix[i][j].type == 2)
-            {
-                return {.i = i, .j = j};
-            }
-        }
+        x = (int) randomCoordinates(rd);
+        y = (int) randomCoordinates(rd);
     }
 
-    return {};
+    return {.i = x, .j = y};
 }
 
 SegregationStats segregate(std::vector<std::vector<Agent>> matrix)
@@ -151,71 +159,6 @@ std::vector<std::vector<Agent>> generateSociety(int matrixSize)
     int redCitizenCounter = plotCitizens(segregationVector, 0, maxCitizenType, coordinates, matrixSize);
     int blueCitizenCounter = plotCitizens(segregationVector, 1, maxCitizenType, coordinates, matrixSize);
     blank = plotCitizens(segregationVector, 2, maxBlank, coordinates, matrixSize);
-
-    // while (positions < matrixTotalSize)
-    // {
-    //     int x = randomCoordinates(rd);
-    //     int y = randomCoordinates(rd);
-    //     std::string coord = std::to_string(x) + "-" + std::to_string(y);
-
-    //     auto coordinateExists = std::find(coordinates.begin(), coordinates.end(), coord);
-
-    //     while (coordinateExists != coordinates.end())
-    //     {
-    //         x = randomCoordinates(rd);
-    //         y = randomCoordinates(rd);
-    //         coord = std::to_string(x) + "-" + std::to_string(y);
-
-    //         coordinateExists = std::find(coordinates.begin(), coordinates.end(), coord);
-    //     }
-
-    //     int citizen = randomCitizen(rd);
-
-    //     switch (citizen)
-    //     {
-    //     case 0:
-    //         if(redCitizenCounter <= maxCitizenType){
-    //             redCitizenCounter += 1;
-    //         }else {
-    //             citizen = randomCitizen(rd);
-    //             while (citizen == 0)
-    //             {
-    //                 citizen = randomCitizen(rd);
-    //             }
-    //         }
-    //         break;
-    //     case 1:
-    //         if(blueCitizenCounter <= maxCitizenType){
-    //             blueCitizenCounter += 1;
-    //         }else {
-    //             citizen = randomCitizen(rd);
-    //             while (citizen == 1)
-    //             {
-    //                 citizen = randomCitizen(rd);
-    //             }
-    //         }
-    //         break;
-    //     case 2:
-    //         if(blank <= maxBlank){
-    //             blank += 1;
-    //         }else {
-    //             citizen = randomCitizen(rd);
-    //             while (citizen == 2)
-    //             {
-    //                 citizen = randomCitizen(rd);
-    //             }
-    //         }
-    //         break;
-    //     default:
-    //         break;
-    //     }
-
-    //     segregationVector.at(x).at(y).type = citizen;
-    //     coordinates.push_back(coord);
-
-    //     positions += 1;
-    //     std::cout << redCitizenCounter << " " << blueCitizenCounter << std::endl;
-    // }
 
     std::cout
         << "METADE: " << maxCitizenType << " RED: " << redCitizenCounter << " BLUE: " << blueCitizenCounter << " WHITE: " << blank << std::endl;
