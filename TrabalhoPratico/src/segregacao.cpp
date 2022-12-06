@@ -70,7 +70,7 @@ Moore getBelow(std::vector<std::vector<Agent>> society, int i, int j)
         return {.type = -1};
     }
 
-    return {.y = coordY, .x = j, .type = society.at(coordY).at(j).type};
+    return {.type = society.at(coordY).at(j).type, .y = coordY, .x = j};
 }
 
 Moore getAbove(std::vector<std::vector<Agent>> society, int i, int j)
@@ -92,7 +92,7 @@ Moore getRight(std::vector<std::vector<Agent>> society, int i, int j)
         return {.type = -1};
     }
 
-    return {.y = i, .x = coordX, .type = society.at(i).at(coordX).type};
+    return {.type = society.at(i).at(coordX).type, .y = i, .x = coordX};
 }
 
 Moore getLeft(std::vector<std::vector<Agent>> society, int i, int j)
@@ -103,7 +103,7 @@ Moore getLeft(std::vector<std::vector<Agent>> society, int i, int j)
         return {.type = -1};
     }
 
-    return {.y = i, .x = coordX, .type = society.at(i).at(coordX).type};
+    return {.type = society.at(i).at(coordX).type, .y = i, .x = coordX};
 }
 
 bool isItTheSame(Moore side, Agent position)
@@ -182,7 +182,7 @@ SegregationStats segregate(std::vector<std::vector<Agent>> society)
 
                 if (similar < (8 * threshold))
                 {
-                    unhappyAgents.push_back({.x = i, .y = j, .type = position.type});
+                    unhappyAgents.push_back({.type = position.type, .y = i, .x = j});
 
                     // Moore empty = findEmpty(society);
                     // std::swap(society.at(empty.y).at(empty.x), society.at(i).at(j));

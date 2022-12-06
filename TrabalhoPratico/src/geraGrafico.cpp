@@ -44,7 +44,7 @@ std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), in
 
 SDL_Rect rectFactory(int x, int y, int width, int height)
 {
-    SDL_Rect rect = {.w = width, .h = height, .x = x, .y = y};
+    SDL_Rect rect = {.x = x, .y = y, .w = width, .h = height};
 
     return rect;
 }
@@ -75,12 +75,12 @@ void geraGrafico(std::vector<std::vector<Agent>> segregationMatrix)
     }
 
     window = SDL_CreateWindow(
-        "Modelo de Segregação Social de Schelling",        // window title
-        SDL_WINDOWPOS_UNDEFINED, // initial x position
-        SDL_WINDOWPOS_UNDEFINED, // initial y position
-        windowWidth,             // width, in pixels
-        windowHeight,            // height, in pixels
-        SDL_WINDOW_SHOWN         // flags - see below
+        "Modelo de Segregação Social de Schelling", // window title
+        SDL_WINDOWPOS_UNDEFINED,                    // initial x position
+        SDL_WINDOWPOS_UNDEFINED,                    // initial y position
+        windowWidth,                                // width, in pixels
+        windowHeight,                               // height, in pixels
+        SDL_WINDOW_SHOWN                            // flags - see below
     );
 
     if (window == NULL)
