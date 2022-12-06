@@ -4,7 +4,7 @@ CC = g++
 SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJ_NAME = tp
 INCLUDE_PATHS = -Iinclude
-LIBRARY_PATHS = -L/opt/homebrew/Cellar/sdl2/2.26.0/lib/ -L/opt/homebrew/Cellar/sdl2_image/2.6.2/lib
+LIBRARY_PATHS = -L/Users/josineyjunior/Documents/FACULDADE/AEDS/AEDSI/Lista01/TrabalhoPratico/lib/SDL2 -L/Users/josineyjunior/Documents/FACULDADE/AEDS/AEDSI/Lista01/TrabalhoPratico/lib/SDL2_image
 COMPILER_FLAGS = -std=c++20
 LINKER_FLAGS = -lsdl2 -lsdl2_image
 
