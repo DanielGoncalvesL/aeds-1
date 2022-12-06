@@ -81,7 +81,7 @@ SegregationStats segregate(std::vector<std::vector<Agent>> matrix)
     return {.society = matrix};
 }
 
-int plotCitizens(std::vector<std::vector<Agent>> &segregationVector, int citizen, int maxCitizens, std::vector<std::string> coordinates, int matrixSize)
+int plotCitizens(std::vector<std::vector<Agent>> &segregationVector, int citizen, int maxCitizens, std::vector<std::string> &coordinates, int matrixSize)
 {
     int plotCounter = 0;
 
