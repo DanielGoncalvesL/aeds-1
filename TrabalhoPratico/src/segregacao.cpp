@@ -18,7 +18,7 @@ Moore getLeftBelow(std::vector<std::vector<Agent>> society, int i, int j)
         return {.type = -1};
     }
 
-    return {.y = coordY, .x = coordX, .type = society.at(coordY).at(coordX).type};
+    return {.type = society.at(coordY).at(coordX).type, .y = coordY, .x = coordX};
 }
 
 Moore getRightBelow(std::vector<std::vector<Agent>> society, int i, int j)
@@ -31,7 +31,7 @@ Moore getRightBelow(std::vector<std::vector<Agent>> society, int i, int j)
         return {.type = -1};
     }
 
-    return {.y = coordY, .x = coordX, .type = society.at(coordY).at(coordX).type};
+    return {.type = society.at(coordY).at(coordX).type, .y = coordY, .x = coordX};
 }
 
 Moore getRightAbove(std::vector<std::vector<Agent>> society, int i, int j)
@@ -44,7 +44,9 @@ Moore getRightAbove(std::vector<std::vector<Agent>> society, int i, int j)
         return {.type = -1};
     }
 
-    return {.y = coordY, .x = coordX, .type = society.at(coordY).at(coordX).type};
+    Moore teste = { .type = society.at(coordY).at(coordX).type, .y = coordY, .x = coordX }; 
+
+    return teste;
 }
 
 Moore getLeftAbove(std::vector<std::vector<Agent>> society, int i, int j)
@@ -57,7 +59,7 @@ Moore getLeftAbove(std::vector<std::vector<Agent>> society, int i, int j)
         return {.type = -1};
     }
 
-    return {.y = coordY, .x = coordX, .type = society.at(coordY).at(coordX).type};
+    return { .type = society.at(coordY).at(coordX).type, .y = coordY, .x = coordX };
 }
 
 Moore getBelow(std::vector<std::vector<Agent>> society, int i, int j)
@@ -79,7 +81,7 @@ Moore getAbove(std::vector<std::vector<Agent>> society, int i, int j)
         return {.type = -1};
     }
 
-    return {.y = coordY, .x = j, .type = society.at(coordY).at(j).type};
+    return { .type = society.at(coordY).at(j).type, .y = coordY, .x = j };
 }
 
 Moore getRight(std::vector<std::vector<Agent>> society, int i, int j)
@@ -117,7 +119,7 @@ Moore findEmpty(std::vector<std::vector<Agent>> society)
         {
             if (society.at(i).at(j).type == 2)
             {
-                return {.y = i, .x = j, .type = 2};
+                return {.type = 2, .y = i, .x = j};
             }
         }
     }
