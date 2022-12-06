@@ -9,7 +9,7 @@
 #include "segregation.h"
 #include "generateMatrix.h"
 
-bool verifyUnhappyCitizen(int x, int y, std::vector<std::vector<Agent>> matrix)
+bool verifyUnhappyCitizen(int x, int y, std::vector<std::vector<Agent>> matrix, float tolerance)
 {
     int cont = 0;
     int contRadius = 0;
@@ -36,7 +36,7 @@ bool verifyUnhappyCitizen(int x, int y, std::vector<std::vector<Agent>> matrix)
         }
     }
 
-    if (cont >= std::round(contRadius * 0.3))
+    if (cont >= std::round(contRadius * tolerance))
     {
         return true;
     }
@@ -65,7 +65,7 @@ Coordinates searchBlankSpace(std::vector<std::vector<Agent>> matrix)
     return {.i = x, .j = y};
 }
 
-SegregationStats segregate(std::vector<std::vector<Agent>> matrix)
+SegregationStats segregate(std::vector<std::vector<Agent>> matrix, float tolerance)
 {
     int contador = 0;
 
@@ -75,7 +75,7 @@ SegregationStats segregate(std::vector<std::vector<Agent>> matrix)
         {
             if (matrix[i][j].type == 0 || matrix[i][j].type == 1)
             {
-                bool unhappy = verifyUnhappyCitizen(j, i, matrix);
+                bool unhappy = verifyUnhappyCitizen(j, i, matrix, tolerance);
 
                 if (unhappy)
                 {
@@ -169,12 +169,17 @@ std::vector<std::vector<Agent>> generateSociety(int matrixSize)
 int main()
 {
     int matrixSize;
+    float tolerance;
+
     std::cout << "Insira o tamanha da matrix: ";
     std::cin >> matrixSize;
+
+    std::cout << "Insira o grau de tolerancia: ";
+    std::cin >> tolerance;
 
     std::cout << "Gerando Modelo de Segregação Social de Schelling..." << std::endl;
 
     std::vector<std::vector<Agent>> matrix = generateSociety(matrixSize);
 
-    generateMatrix(matrix);
+    generateMatrix(matrix, tolerance);
 }

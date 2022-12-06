@@ -49,7 +49,7 @@ SDL_Rect rectFactory(int x, int y, int width, int height)
     return rect;
 }
 
-void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix)
+void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix, float tolerance)
 {
 
     int squareSize = 10;
@@ -136,7 +136,7 @@ void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix)
 
         SDL_RenderPresent(renderer);
 
-        SegregationStats stats = segregate(segregationMatrix);
+        SegregationStats stats = segregate(segregationMatrix, tolerance);
         segregationMatrix = stats.society;
 
         lastDrawTime = SDL_GetTicks64();
