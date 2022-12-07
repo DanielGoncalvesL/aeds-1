@@ -16,6 +16,7 @@ struct Moore
 struct SegregationStats
 {
     std::vector<std::vector<Agent>> society;
+    bool hasSegregation;
 };
 
 struct Coordinates

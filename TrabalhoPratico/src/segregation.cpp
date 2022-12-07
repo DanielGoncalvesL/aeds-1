@@ -44,36 +44,45 @@ bool verifyUnhappyCitizen(int x, int y, std::vector<std::vector<Agent>> matrix, 
     return false;
 }
 
-bool isEmptyPosition(std::vector<std::vector<Agent>> matrix, int x, int y){
+bool isEmptyPosition(std::vector<std::vector<Agent>> matrix, int x, int y)
+{
     return matrix[x][y].type == 2 ? true : false;
 }
 
 Coordinates searchBlankSpace(std::vector<std::vector<Agent>> matrix)
 {
-    std::random_device rd;
-    std::uniform_int_distribution randomCoordinates(0, (int) matrix.size() - 1);
-
-    int x = (int) randomCoordinates(rd);
-    int y = (int) randomCoordinates(rd);
-
-    while (matrix[x][y].type != 2)
-    {
-        x = (int) randomCoordinates(rd);
-        y = (int) randomCoordinates(rd);
-    }
-
-    return {.i = x, .j = y};
-}
-
-SegregationStats segregate(std::vector<std::vector<Agent>> matrix, float tolerance)
-{
-    int contador = 0;
+    std::vector<Coordinates> blankSpaces;
 
     for (int i = 0; i < matrix.size(); i++)
     {
         for (int j = 0; j < matrix.size(); j++)
         {
-            if (matrix[i][j].type == 0 || matrix[i][j].type == 1)
+            if (matrix[i][j].type == 2)
+            {
+                blankSpaces.push_back({.i = i, .j = j});
+            }
+        }
+    }
+
+    std::random_device rd;
+    std::uniform_int_distribution<int> randomCoordinates(0, blankSpaces.size() - 1);
+
+    int i = randomCoordinates(rd);
+
+    Coordinates coordinate = {.i = blankSpaces[i].i, .j = blankSpaces[i].j};
+
+    return coordinate;
+}
+
+SegregationStats segregate(std::vector<std::vector<Agent>> matrix, float tolerance)
+{
+    bool unhappyStats = false;
+
+    for (int i = 0; i < matrix.size(); i++)
+    {
+        for (int j = 0; j < matrix.size(); j++)
+        {
+            if (matrix[i][j].type != 2)
             {
                 bool unhappy = verifyUnhappyCitizen(j, i, matrix, tolerance);
 
@@ -81,12 +90,17 @@ SegregationStats segregate(std::vector<std::vector<Agent>> matrix, float toleran
                 {
                     Coordinates blankSpace = searchBlankSpace(matrix);
                     std::swap(matrix[i][j], matrix[blankSpace.i][blankSpace.j]);
+
+                    if (!unhappyStats)
+                    {
+                        unhappyStats = true;
+                    }
                 }
             }
         }
     }
 
-    return {.society = matrix};
+    return {.society = matrix, .hasSegregation = unhappyStats};
 }
 
 int plotCitizens(std::vector<std::vector<Agent>> &segregationVector, int citizen, int maxCitizens, std::vector<std::string> &coordinates, int matrixSize)
@@ -132,14 +146,16 @@ std::vector<std::vector<Agent>> generateSociety(int matrixSize)
 
     int matrixTotalSize = matrixSize * matrixSize;
 
-    int maxBlank = matrixTotalSize * 0.1;
+    int maxBlank = matrixTotalSize * 0.25;
 
     if (maxBlank == 0)
     {
         maxBlank = 1;
     }
 
-    int maxCitizenType = (matrixTotalSize - maxBlank) / 2;
+    int yellowCitizenMaxQuantity = (matrixTotalSize - maxBlank) * 0.01;
+
+    int maxCitizenType = (matrixTotalSize - (maxBlank + yellowCitizenMaxQuantity)) / 2;
 
     for (int i = 0; i < matrixSize; i++)
     {
@@ -154,14 +170,15 @@ std::vector<std::vector<Agent>> generateSociety(int matrixSize)
     int positions = 0;
     int blank = 0;
 
-    std::cout << maxCitizenType << std::endl;
+    // std::cout << maxCitizenType << std::endl;
 
     int redCitizenCounter = plotCitizens(segregationVector, 0, maxCitizenType, coordinates, matrixSize);
     int blueCitizenCounter = plotCitizens(segregationVector, 1, maxCitizenType, coordinates, matrixSize);
+    int yellowCitizenCounter = plotCitizens(segregationVector, 3, yellowCitizenMaxQuantity, coordinates, matrixSize);
     blank = plotCitizens(segregationVector, 2, maxBlank, coordinates, matrixSize);
 
     std::cout
-        << "METADE: " << maxCitizenType << " RED: " << redCitizenCounter << " BLUE: " << blueCitizenCounter << " WHITE: " << blank << std::endl;
+        << "METADE: " << maxCitizenType << " RED: " << redCitizenCounter << " BLUE: " << blueCitizenCounter << " YELLOW: " << yellowCitizenCounter << " WHITE: " << blank << std::endl;
 
     return segregationVector;
 }

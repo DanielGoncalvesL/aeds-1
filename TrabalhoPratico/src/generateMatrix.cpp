@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <random>
+
 #include "segregation.h"
 
 std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), int xStart, int yStart, int squareSize, SDL_Renderer *renderer, int matrixSize, std::vector<std::vector<Agent>> segregationMatrix)
@@ -8,6 +9,7 @@ std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), in
     std::vector<SDL_Rect> rects;
 
     std::vector<SDL_Rect> yellowRects;
+    std::vector<SDL_Rect> blueRects;
     std::vector<SDL_Rect> redRects;
 
     for (long int i = 0; i < matrixSize; i++)
@@ -17,7 +19,7 @@ std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), in
             SDL_Rect rect = (*rectFactory)(xStart + squareSize * i, yStart + squareSize * j, squareSize, squareSize);
             if (segregationMatrix.at(i).at(j).type == 1)
             {
-                yellowRects.push_back(rect);
+                blueRects.push_back(rect);
             }
 
             if (segregationMatrix.at(i).at(j).type == 0)
@@ -25,11 +27,21 @@ std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), in
                 redRects.push_back(rect);
             }
 
+            if (segregationMatrix.at(i).at(j).type == 3)
+            {
+                yellowRects.push_back(rect);
+            }
+
             rects.push_back(rect);
         }
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_Rect blue[blueRects.size()];
+    std::copy(blueRects.begin(), blueRects.end(), blue);
+    SDL_RenderFillRects(renderer, blue, blueRects.size());
+
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     SDL_Rect yellow[yellowRects.size()];
     std::copy(yellowRects.begin(), yellowRects.end(), yellow);
     SDL_RenderFillRects(renderer, yellow, yellowRects.size());
@@ -97,6 +109,8 @@ void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix, float tol
         return;
     }
 
+    int rounds = 0;
+
     while (appIsRunning)
     {
         // slowing things down a little, you can delete this if you like
@@ -138,6 +152,17 @@ void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix, float tol
 
         SegregationStats stats = segregate(segregationMatrix, tolerance);
         segregationMatrix = stats.society;
+
+        bool hasSegregation = stats.hasSegregation;
+
+        if (hasSegregation)
+        {
+            rounds += 1;
+        }
+        else
+        {
+            std::cout << "Rodadas: " << rounds << std::endl;
+        }
 
         lastDrawTime = SDL_GetTicks64();
     }
