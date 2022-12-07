@@ -110,6 +110,7 @@ void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix, float tol
     }
 
     int rounds = 0;
+    int displayNumberRounds = 0;
 
     while (appIsRunning)
     {
@@ -161,7 +162,10 @@ void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix, float tol
         }
         else
         {
-            std::cout << "Rodadas: " << rounds << std::endl;
+            if(displayNumberRounds < 1) {
+                std::cout << "Rodadas: " << rounds << std::endl;
+                displayNumberRounds += 1;
+            }
         }
 
         lastDrawTime = SDL_GetTicks64();
