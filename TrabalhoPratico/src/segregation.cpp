@@ -135,7 +135,7 @@ int plotCitizens(std::vector<std::vector<Agent>> &segregationVector, int citizen
     return plotCounter;
 }
 
-std::vector<std::vector<Agent>> generateSociety(int matrixSize, float blankPercent)
+std::vector<std::vector<Agent>> generateSociety(int matrixSize, float blankPercent, bool thirdCitizen)
 {
     std::random_device rd;
     std::uniform_int_distribution randomCitizen(0, 2);
@@ -153,9 +153,9 @@ std::vector<std::vector<Agent>> generateSociety(int matrixSize, float blankPerce
         maxBlank = 1;
     }
 
-    // int yellowCitizenMaxQuantity = (matrixTotalSize - maxBlank) * 0.333;
+    int yellowCitizenMaxQuantity = thirdCitizen ? (matrixTotalSize - maxBlank) * 0.01 : 0;
 
-    int maxCitizenType = (matrixTotalSize - (maxBlank)) / 2;
+    int maxCitizenType = (matrixTotalSize - (maxBlank + yellowCitizenMaxQuantity)) / 2;
 
     for (int i = 0; i < matrixSize; i++)
     {
@@ -170,15 +170,15 @@ std::vector<std::vector<Agent>> generateSociety(int matrixSize, float blankPerce
     int positions = 0;
     int blank = 0;
 
-    // std::cout << maxCitizenType << std::endl;
+    std::cout << maxCitizenType << std::endl;
 
     int redCitizenCounter = plotCitizens(segregationVector, 0, maxCitizenType, coordinates, matrixSize);
     int blueCitizenCounter = plotCitizens(segregationVector, 1, maxCitizenType, coordinates, matrixSize);
-    // int yellowCitizenCounter = plotCitizens(segregationVector, 3, yellowCitizenMaxQuantity, coordinates, matrixSize);
+    int yellowCitizenCounter = plotCitizens(segregationVector, 3, yellowCitizenMaxQuantity, coordinates, matrixSize);
     blank = plotCitizens(segregationVector, 2, maxBlank, coordinates, matrixSize);
 
     std::cout
-        << "METADE: " << maxCitizenType << " RED: " << redCitizenCounter << " BLUE: " << blueCitizenCounter << " WHITE: " << blank << std::endl;
+        << "METADE: " << maxCitizenType << " RED: " << redCitizenCounter << " BLUE: " << blueCitizenCounter << " YELLOW: " << yellowCitizenCounter << " WHITE: " << blank << std::endl;
 
     return segregationVector;
 }
@@ -187,6 +187,7 @@ int main()
 {
     int matrixSize;
     float tolerance, blankPercent;
+    bool thirdCitizen;
 
     std::cout << "Insira o tamanho da matrix: ";
     std::cin >> matrixSize;
@@ -197,9 +198,17 @@ int main()
     std::cout << "Insira o grau de tolerancia: ";
     std::cin >> tolerance;
 
+    std::cout << "Gerar sociedade com 3 raças? 0 -> Não / 1 -> Sim ";
+    std::cin >> thirdCitizen;
+
+    if (thirdCitizen)
+    {
+        std::cout << "Gerando Modelo de Segregação Social de Schelling..." << std::endl;
+    }
+
     std::cout << "Gerando Modelo de Segregação Social de Schelling..." << std::endl;
 
-    std::vector<std::vector<Agent>> matrix = generateSociety(matrixSize, blankPercent);
+    std::vector<std::vector<Agent>> matrix = generateSociety(matrixSize, blankPercent, thirdCitizen);
 
     generateMatrix(matrix, tolerance);
 }

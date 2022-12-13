@@ -27,10 +27,10 @@ std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), in
                 redRects.push_back(rect);
             }
 
-            // if (segregationMatrix.at(i).at(j).type == 3)
-            // {
-            //     yellowRects.push_back(rect);
-            // }
+            if (segregationMatrix.at(i).at(j).type == 3)
+            {
+                yellowRects.push_back(rect);
+            }
 
             rects.push_back(rect);
         }
@@ -41,10 +41,10 @@ std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), in
     std::copy(blueRects.begin(), blueRects.end(), blue);
     SDL_RenderFillRects(renderer, blue, blueRects.size());
 
-    // SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-    // SDL_Rect yellow[yellowRects.size()];
-    // std::copy(yellowRects.begin(), yellowRects.end(), yellow);
-    // SDL_RenderFillRects(renderer, yellow, yellowRects.size());
+    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+    SDL_Rect yellow[yellowRects.size()];
+    std::copy(yellowRects.begin(), yellowRects.end(), yellow);
+    SDL_RenderFillRects(renderer, yellow, yellowRects.size());
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_Rect red[redRects.size()];

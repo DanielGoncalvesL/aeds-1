@@ -25,7 +25,7 @@ struct Coordinates
     int j;
 };
 
-std::vector<std::vector<Agent>> generateSociety(int matrixSize, float blankPercent);
+std::vector<std::vector<Agent>> generateSociety(int matrixSize, float blankPercent, bool thirdCitizen);
 SegregationStats segregate(std::vector<std::vector<Agent>> matrix, float tolerance);
 
 #endif
