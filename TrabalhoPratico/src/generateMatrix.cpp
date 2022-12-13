@@ -27,10 +27,10 @@ std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), in
                 redRects.push_back(rect);
             }
 
-            if (segregationMatrix.at(i).at(j).type == 3)
-            {
-                yellowRects.push_back(rect);
-            }
+            // if (segregationMatrix.at(i).at(j).type == 3)
+            // {
+            //     yellowRects.push_back(rect);
+            // }
 
             rects.push_back(rect);
         }
@@ -41,10 +41,10 @@ std::vector<SDL_Rect> RectMatrix(SDL_Rect (*rectFactory)(int, int, int, int), in
     std::copy(blueRects.begin(), blueRects.end(), blue);
     SDL_RenderFillRects(renderer, blue, blueRects.size());
 
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-    SDL_Rect yellow[yellowRects.size()];
-    std::copy(yellowRects.begin(), yellowRects.end(), yellow);
-    SDL_RenderFillRects(renderer, yellow, yellowRects.size());
+    // SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    // SDL_Rect yellow[yellowRects.size()];
+    // std::copy(yellowRects.begin(), yellowRects.end(), yellow);
+    // SDL_RenderFillRects(renderer, yellow, yellowRects.size());
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_Rect red[redRects.size()];
@@ -67,8 +67,13 @@ void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix, float tol
     int squareSize = 10;
     int matrixSize = segregationMatrix.size();
 
-    int windowWidth = squareSize * matrixSize + 450;
-    int windowHeight = squareSize * matrixSize + 50;
+    int matrixWidth = squareSize * matrixSize;
+
+    int windowWidth = matrixWidth + 150;
+    int windowHeight = matrixWidth + 50;
+
+    int windowXStartAt = (windowWidth - matrixWidth) / 2;
+    int windowsYStartAt = (windowHeight - matrixWidth) / 2;
 
     SDL_Window *window = nullptr;
     SDL_Renderer *renderer = nullptr;
@@ -79,11 +84,11 @@ void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix, float tol
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        std::cout << "SDL could not be initialized: " << SDL_GetError();
+        std::cout << "SDL não pode ser inicializado: " << SDL_GetError() << std::endl;
     }
     else
     {
-        std::cout << "SDL video system is ready to go\n";
+        std::cout << "Sistema de video inicializado" << std::endl;
     }
 
     window = SDL_CreateWindow(
@@ -97,7 +102,7 @@ void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix, float tol
 
     if (window == NULL)
     {
-        printf("Could not create window: %s\n", SDL_GetError());
+        printf("Não foi possivel criar a janela: %s\n", SDL_GetError());
         return;
     }
 
@@ -105,7 +110,7 @@ void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix, float tol
 
     if (renderer == NULL)
     {
-        printf("Could not create renderer: %s\n", SDL_GetError());
+        printf("Não foi possivel criar o renderizador: %s\n", SDL_GetError());
         return;
     }
 
@@ -132,7 +137,7 @@ void generateMatrix(std::vector<std::vector<Agent>> segregationMatrix, float tol
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
-        std::vector<SDL_Rect> rectsVector = RectMatrix(rectFactory, 10, 10, squareSize, renderer, matrixSize, segregationMatrix);
+        std::vector<SDL_Rect> rectsVector = RectMatrix(rectFactory, windowXStartAt, windowsYStartAt, squareSize, renderer, matrixSize, segregationMatrix);
         SDL_Rect rects[rectsVector.size()];
         std::copy(rectsVector.begin(), rectsVector.end(), rects);
 
