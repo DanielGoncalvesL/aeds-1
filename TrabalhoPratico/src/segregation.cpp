@@ -170,7 +170,7 @@ std::vector<std::vector<Agent>> generateSociety(int matrixSize, float blankPerce
     int positions = 0;
     int blank = 0;
 
-    std::cout << maxCitizenType << std::endl;
+    // std::cout << maxCitizenType << std::endl;
 
     int redCitizenCounter = plotCitizens(segregationVector, 0, maxCitizenType, coordinates, matrixSize);
     int blueCitizenCounter = plotCitizens(segregationVector, 1, maxCitizenType, coordinates, matrixSize);
